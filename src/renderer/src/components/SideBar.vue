@@ -1,45 +1,69 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import menuItems from '../assets/menuItems.json';
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import menuItems from '../assets/menuItems.json'
+import docsItems from '../assets/docs.json'
+import { useEventBus } from '@vueuse/core'
 
 defineProps({
   isVisible: Boolean
 })
 
-const menuData = ref([]);
+const menuData = ref([])
+const router = useRouter()
+const eventBus = useEventBus('load-docs')
 
 onMounted(() => {
-  menuData.value = menuItems;
-});
+  menuData.value = menuItems
+  eventBus.on(() => {
+    menuData.value = docsItems
+  })
+})
+const handleMenuItemClick = (item) => {
+  if (item.type === 'link') {
+    if (item.route) {
+      router.push(item.route)
+    }
+  } else if (item.type === 'window') {
+    window.electronAPI.send('create-child-window', { windowType: 'secondary', goUrl: item.route })
+  } else if (item.route) {
+    router.push(item.route)
+  }
+}
 </script>
 
 <template>
   <div class="sidebar" :class="{ 'sidebar-hidden': !isVisible }">
-    <transition-group name="list" tag="div" v-show="isVisible" appear>
-      <ul class="menus" key="sidebar-ul">
+    <transition-group v-show="isVisible" name="list" tag="div" appear>
+      <ul key="sidebar-ul" class="menus">
         <li
-          v-for="(item, index) in menuData" 
+          v-for="(item, index) in menuData"
           :key="index + 1"
           class="menu-item"
           :style="`--i: ${index + 1}`"
+          @click="handleMenuItemClick(item)"
         >
           <div class="menu-item-content">
             {{ item.text }}
           </div>
           <div class="menu-item-icon">
-            <img :src="item.icon" alt="">
+            <img :src="item.icon" alt="icon" />
           </div>
         </li>
-      </ul>  
+      </ul>
     </transition-group>
   </div>
 </template>
 
 <style scoped>
-/* 原样式代码保持不变 */
-.menus{
+.menus {
   padding: 0;
   margin: 0;
+}
+.menus a {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
 }
 .menu-item {
   user-select: none;
@@ -48,21 +72,21 @@ onMounted(() => {
   display: flex;
   justify-content: space-around;
   background: #242424;
-  color:#fff ;
+  color: #fff;
   box-shadow: inset 1px -4px 0px 0px rgb(235 85 85 / 20%);
   padding: 12px 24px;
-  transition: .3s ease;
+  transition: 0.3s ease;
   animation: menu-item-load cubic-bezier(0.42, 0, 0, 0.65) calc(0.2s * var(--i)) forwards;
 }
 .menu-item-content {
-  transition: .3s ease;
+  transition: 0.3s ease;
 }
 .menu-item-icon {
   width: 24px;
   height: 24px;
   display: flex;
   align-items: center;
-  transition: .3s ease;
+  transition: 0.3s ease;
 }
 .menu-item-icon img {
   width: 100%;
@@ -73,10 +97,10 @@ onMounted(() => {
   box-shadow: inset 0px -20px 20px 10px rgba(255, 0, 0, 0.2);
   /* background: #a53b3b; */
 }
-.menu-item:hover .menu-item-content{
+.menu-item:hover .menu-item-content {
   transform: translateX(10px);
 }
-.menu-item:hover .menu-item-icon{
+.menu-item:hover .menu-item-icon {
   transform: translateX(-5px);
 }
 @keyframes menu-item-load {

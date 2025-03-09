@@ -1,14 +1,18 @@
 appId: com.electron.app
 productName: picio
 directories:
+  output: out
   buildResources: build
 files:
+  - '!**/node_modules/**'
   - '!**/.vscode/*'
+  - 'out/**'
   - '!src/*'
-  - '!electron.vite.config.{js,ts,mjs,cjs}'
-  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
-  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - 'resources/**'
+asar: true
 asarUnpack:
+  - '**/*.node'
+  - 'resources/*'
   - resources/**
 win:
   executableName: picio

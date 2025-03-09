@@ -1,50 +1,23 @@
 [
   {
-    "text": "选项 1",
-    "icon": "img/user.svg"
+    "text": "阅读",
+    "icon": "img/user.svg",
+    "type": "window",
+    "route": "docs",
+    "preload": "docs.js"
   },
   {
-    "text": "选项 2",
-    "icon": "img/user.svg"
+    "text": "设置",
+    "icon": "img/settings.svg",
+    "type": "link",
+    "route": "/settings",
+    "preload": ""
   },
   {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "img/user.svg"
-  },
-  {
-    "text": "选项 20",
-    "icon": "./img/user.svg?asset"
+    "text": "收藏",
+    "icon": "img/favorite.svg",
+    "type": "link",
+    "route": "/favorites",
+    "preload": ""
   }
 ]

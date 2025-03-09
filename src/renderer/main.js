@@ -6,10 +6,7 @@ import axios from 'axios'
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [
-    { path: '/', component: () => import('./views/HomeView.vue') },
-    { path: '/about', component: () => import('./views/AboutView.vue') }
-  ]
+  routes: [{ path: '/', component: () => import('./views/HomeView.vue') }]
 })
 
 const pinia = createPinia()

@@ -14,10 +14,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-const minimize = () => window.electronAPI.send('window-control', 'minimize');
-
-const toggleMaximize = () => window.electronAPI.send('window-control', 'toggle-maximize');
-const close = () => window.electronAPI.send('window-control', 'close');
+const minimize = () => window.electronAPI.send('window-control', 'minimize')
+const toggleMaximize = () => window.electronAPI.send('window-control', 'toggle-maximize')
+const close = () => window.electronAPI.send('window-control', 'close')
 const currentTime = ref(new Date().toLocaleTimeString())
 
 onMounted(() => {

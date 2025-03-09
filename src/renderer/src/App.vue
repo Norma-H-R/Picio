@@ -1,40 +1,35 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import CustomTitleBar from './components/CustomTitleBar.vue'
 import SideBar from './components/SideBar.vue'
 import NotificationComponent from './components/NotificationComponent.vue'
-
-
 
 const isSidebarVisible = ref(true)
 const toggleSidebar = () => {
   isSidebarVisible.value = !isSidebarVisible.value
 }
 const notification = ref(null)
-const handleAddNotification = (config) => {
-  notification.value?.addNotification(config)
-}
+provide('notification', notification)
 </script>
-
 <template>
   <CustomTitleBar @toggle-sidebar="toggleSidebar" />
-    <div class="main-container">
+  <div class="main-container">
     <SideBar :is-visible="isSidebarVisible" />
     <div class="content">
       <NotificationComponent ref="notification" />
-      <div class="button-group">
-        <button class="notify-btn" @click="handleAddNotification({ title: '成功', message: '操作成功完成', type: 'success' })">成功通知</button>
-        <button class="notify-btn error" @click="handleAddNotification({ title: '错误', message: '发生未知错误', type: 'error' })">错误通知</button>
-        <button class="notify-btn warning" @click="handleAddNotification({ title: '警告', message: '磁盘空间不足', type: 'warning', duration: 8000 })">警告通知</button>
-      </div>
-      <div class="aaa"> 测试数据</div>
-      <div class="aaa"> <img src="../src/assets/img/user.svg" alt=""></div>
-      <div class="aaa"> 测试数据</div>
-      <div class="aaa"> 测试数据</div>
-      <div class="aaa"> 测试数据</div>
+      <router-view v-slot="{ Component }">
+        <Transition name="route" mode="out-in">
+          <component :is="Component" />
+        </Transition>
+      </router-view>
+      <!-- <div class="aaa">测试数据</div>
+      <div class="aaa"><img src="../src/assets/img/user.svg" alt="" /></div>
+      <div class="aaa">测试数据</div>
+      <div class="aaa">测试数据</div>
+      <div class="aaa">测试数据</div> -->
       <div class="backgroundword">
-          <HelloWorld msg="Picio" />
+        <HelloWorld msg="Picio" />
       </div>
     </div>
   </div>
@@ -55,6 +50,30 @@ const handleAddNotification = (config) => {
   padding: 0px;
   flex-grow: 1;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 50px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.route-enter-active,
+.route-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  width: 100%;
+}
+
+.route-enter-from {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.route-leave-to {
+  opacity: 0;
+  transform: translateX(-50px);
+  z-index: 0;
 }
 .content {
   position: relative;
@@ -71,37 +90,5 @@ const handleAddNotification = (config) => {
   justify-content: center;
   align-items: center;
   z-index: -999;
-}
-
-.notify-btn {
-  padding: 8px 16px;
-  background: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: 0.3s;
-  margin: 8px;
-}
-
-.notify-btn:hover {
-  opacity: 0.9;
-}
-
-.notify-btn.error {
-  background: #f44336;
-}
-
-.notify-btn.warning {
-  background: #ff9800;
-}
-
-.button-group {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  gap: 10px;
-  z-index: 1000;
 }
 </style>

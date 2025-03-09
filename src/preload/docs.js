@@ -8,10 +8,7 @@ const api = {
   },
   isChildWindow: () => {
     // 这里可以添加判断是否为子窗口的逻辑
-    return false
-  },
-  showOpenDialog: () => {
-    return electronAPI.ipcRenderer.invoke('show-open-dialog')
+    return true;
   }
 }
 
@@ -22,9 +19,7 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electronAPI', {
       send: (channel, data) => electronAPI.ipcRenderer.send(channel, data),
-      invoke: (channel, data) => electronAPI.ipcRenderer.invoke(channel, data),
-      isChildWindow: api.isChildWindow,
-      showOpenDialog: api.showOpenDialog
+      isChildWindow: api.isChildWindow
     })
     contextBridge.exposeInMainWorld('api', api)
   } catch (error) {
