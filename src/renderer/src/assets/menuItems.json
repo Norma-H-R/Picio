@@ -2,7 +2,7 @@
   {
     "text": "阅读",
     "icon": "img/user.svg",
-    "type": "window",
+    "type": "link",
     "route": "docs",
     "preload": "docs.js"
   },

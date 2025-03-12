@@ -181,9 +181,11 @@ const removeNotification = (id) => {
 }
 @keyframes notification {
   from {
+    opacity: 0;
     transform: translateX(300px);
   }
   to {
+    opacity: 1;
     transform: translateX(0px);
   }
 }
@@ -228,10 +230,12 @@ const removeNotification = (id) => {
 }
 @keyframes notification-r {
   from {
+    opacity: 1;
     transform: translateX(0px);
     justify-content: left;
   }
   to {
+    opacity: 0;
     transform: translateX(340px);
     justify-content: left;
   }

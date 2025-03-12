@@ -107,17 +107,22 @@ html {
   -ms-overflow-style: none; /* IE/Edge */
 }
 
-
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: #FFF;
+  background: #fff;
   animation: scrollbarFlow 2s infinite;
   z-index: 1;
 }
 
-
 @keyframes scrollbarFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
+

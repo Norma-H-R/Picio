@@ -13,6 +13,7 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['toggle-sidebar'])
 import { ref, onMounted } from 'vue'
 const minimize = () => window.electronAPI.send('window-control', 'minimize')
 const toggleMaximize = () => window.electronAPI.send('window-control', 'toggle-maximize')
@@ -24,6 +25,9 @@ onMounted(() => {
     currentTime.value = new Date().toLocaleTimeString()
   }, 1000)
 })
+const toggleSidebar = () => {
+  emit('toggle-sidebar')
+}
 </script>
 
 <style scoped>
@@ -81,6 +85,6 @@ button:focus {
 }
 
 button:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 </style>

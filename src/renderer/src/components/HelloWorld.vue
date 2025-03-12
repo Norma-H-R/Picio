@@ -1,10 +1,10 @@
 <script setup>
+// 移除未使用的ref导入
 import { ref } from 'vue'
 
 defineProps({
-  msg: String,
+  msg: String
 })
-
 </script>
 
 <template>

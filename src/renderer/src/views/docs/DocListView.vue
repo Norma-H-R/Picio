@@ -3,11 +3,32 @@
   <div class="container">
     <div class="header">
       <div class="doc-find" :class="{ 'doc-find-input': isInputActive }">
-        <div class="doc-find-close-btn" :class="{ 'doc-find-close': isInputActive }" @click="find_btn">✕</div>
-        <img :src="`../img/search.svg`" :class="{ 'find-file-btn': isInputActive }" @click="find_file" alt="" />
-        <img :src="`../img/search.svg`" :class="{ 'doc-find-file': isInputActive }" @click="find_btn" alt="" />
-        <input type="text" class="doc-input" :class="{ 'doc-find-input-input': isInputActive }" placeholder="请输入要搜索的名称...">
-      </div> 
+        <div
+          class="doc-find-close-btn"
+          :class="{ 'doc-find-close': isInputActive }"
+          @click="find_btn"
+        >
+          ✕
+        </div>
+        <img
+          :src="`../img/search.svg`"
+          :class="{ 'find-file-btn': isInputActive }"
+          alt=""
+          @click="find_file"
+        />
+        <img
+          :src="`../img/search.svg`"
+          :class="{ 'doc-find-file': isInputActive }"
+          alt=""
+          @click="find_btn"
+        />
+        <input
+          type="text"
+          class="doc-input"
+          :class="{ 'doc-find-input-input': isInputActive }"
+          placeholder="请输入要搜索的名称..."
+        />
+      </div>
       <span class="counter">当前文档数: {{ docList.length }}</span>
       <div class="options">
         <button class="add-btn" @click="selectFile">+ 新增文档</button>
@@ -21,6 +42,7 @@
         class="docs"
         @mouseenter="(e) => handleHover(e, index)"
         @mouseleave="() => popdocRef?.hide()"
+        @click="go_read(file.id)"
       >
         <img :src="file?.cover === 'dd' ? '/img/pbook.jpg' : file?.cover" />
         <div class="docname">{{ file.name }}</div>
@@ -42,7 +64,6 @@ const notification = inject('notification')
 const popdocRef = ref(null)
 
 const isInputActive = ref(false)
-
 const find_btn = () => {
   isInputActive.value = !isInputActive.value
   if (!isInputActive.value) {
@@ -90,12 +111,17 @@ const selectFile = async () => {
     }
 
     if (newFiles.length > 0) {
+      const maxId = docList.value.reduce((max, item) => Math.max(max, item.id || 0), 0)
+      let currentId = maxId + 1
+
       docList.value = [
         ...docList.value,
         ...newFiles.map((path) => ({
+          id: currentId++,
           name: path.split(/[\\/]/).pop(),
           path: path,
-          cover: 'dd'
+          cover: 'dd',
+          createTime: Date.now()
         }))
       ]
 
@@ -120,6 +146,14 @@ onMounted(async () => {
     })
   }
 })
+
+const go_read = (item) => {
+  // console.log(item)
+  window.electronAPI.send('create-child-window', {
+    windowType: 'secondary',
+    goUrl: 'readdoc?id=' + item
+  })
+}
 </script>
 
 <style scoped>
@@ -163,7 +197,7 @@ onMounted(async () => {
   background-color: #fff;
   border-radius: 50%;
 }
-.doc-find-input{
+.doc-find-input {
   animation: doc-find 0.3s ease forwards;
 }
 .doc-find-input-input {
@@ -303,7 +337,7 @@ onMounted(async () => {
 @keyframes doc-find {
   0% {
     opacity: 0;
-    transform: translate(0,0px)
+    transform: translate(0, 0px);
   }
   100% {
     opacity: 1;
@@ -311,7 +345,7 @@ onMounted(async () => {
     height: 80px;
     background: #fff;
     border-radius: 16px;
-    transform: translate(0,100px);
+    transform: translate(0, 100px);
   }
 }
 @keyframes doc-find-input-input {
@@ -324,7 +358,7 @@ onMounted(async () => {
     height: 50px;
     width: 280px;
     opacity: 1;
-    transform: translate(-40px,0px);
+    transform: translate(-40px, 0px);
   }
 }
 </style>

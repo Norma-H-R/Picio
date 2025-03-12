@@ -2,38 +2,38 @@
   <div class="home">
     <h1>Welcome to Picio</h1>
     <div class="button-group">
-        <button
-          class="notify-btn"
-          @click="
-            handleAddNotification({
-              title: '成功',
-              message: '操作成功完成',
-              type: 'success'
-            })
-          "
-        >
-          成功通知
-        </button>
-        <button
-          class="notify-btn error"
-          @click="handleAddNotification({ title: '错误', message: '发生未知错误', type: 'error' })"
-        >
-          错误通知
-        </button>
-        <button
-          class="notify-btn warning"
-          @click="
-            handleAddNotification({
-              title: '警告',
-              message: '磁盘空间不足',
-              type: 'warning',
-              duration: 80000
-            })
-          "
-        >
-          警告通知
-        </button>
-      </div>
+      <button
+        class="notify-btn"
+        @click="
+          handleAddNotification({
+            title: '成功',
+            message: '操作成功完成',
+            type: 'success'
+          })
+        "
+      >
+        成功通知
+      </button>
+      <button
+        class="notify-btn error"
+        @click="handleAddNotification({ title: '错误', message: '发生未知错误', type: 'error' })"
+      >
+        错误通知
+      </button>
+      <button
+        class="notify-btn warning"
+        @click="
+          handleAddNotification({
+            title: '警告',
+            message: '磁盘空间不足',
+            type: 'warning',
+            duration: 80000
+          })
+        "
+      >
+        警告通知
+      </button>
+    </div>
   </div>
 </template>
 

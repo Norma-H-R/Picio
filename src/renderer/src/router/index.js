@@ -30,6 +30,11 @@ const routes = [
     path: '/docslsit',
     name: 'docslsit',
     component: () => import('@/views/docs/DocListView.vue')
+  },
+  {
+    path: '/readdoc',
+    name: 'readdoc',
+    component: () => import('@/views/docs/ReadDocView.vue')
   }
 ]
 

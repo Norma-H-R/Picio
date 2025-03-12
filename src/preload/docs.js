@@ -1,5 +1,6 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+const { ipcRenderer } = require('electron');
 
 // Custom APIs for renderer
 const api = {
@@ -8,7 +9,7 @@ const api = {
   },
   isChildWindow: () => {
     // 这里可以添加判断是否为子窗口的逻辑
-    return true;
+    return true
   }
 }
 
@@ -18,8 +19,9 @@ const api = {
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electronAPI', {
-      send: (channel, data) => electronAPI.ipcRenderer.send(channel, data),
-      isChildWindow: api.isChildWindow
+      invoke: (channel, data) => ipcRenderer.invoke(channel, data),
+      readFile: (data) => ipcRenderer.invoke('read-file', data),
+      readFileBuffer: (data) => ipcRenderer.invoke('read-file-buffer', data)
     })
     contextBridge.exposeInMainWorld('api', api)
   } catch (error) {

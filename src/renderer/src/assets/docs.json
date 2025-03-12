@@ -1,20 +1,20 @@
 [
-    {
-      "text": "文档列表",
-      "icon": "img/user.svg",
-      "type": "link",
-      "route": "/docslsit"
-    },
-    {
-      "text": "知识点",
-      "icon": "img/settings.svg",
-      "type": "link",
-      "route": "/settings"
-    },
-    {
-      "text": "知识地图",
-      "icon": "img/favorite.svg",
-      "type": "link",
-      "route": "/favorites"
-    }
-  ]
+  {
+    "text": "文档列表",
+    "icon": "img/user.svg",
+    "type": "link",
+    "route": "/docslsit"
+  },
+  {
+    "text": "知识点",
+    "icon": "img/settings.svg",
+    "type": "link",
+    "route": "/settings"
+  },
+  {
+    "text": "知识地图",
+    "icon": "img/favorite.svg",
+    "type": "link",
+    "route": "/favorites"
+  }
+]

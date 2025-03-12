@@ -1,7 +1,17 @@
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
+
+// 添加文件打开处理程序
+ipcMain.handle('open-file', async (event, { path }) => {
+  const { shell } = require('electron');
+  await shell.openPath(path);
+});
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/picio.png?asset'
+import chardet from 'chardet'
+import * as iconv from 'iconv-lite'
+
 const fs = require('fs') // 引入 fs 模块
 
 function createWindow(windowType, goUrl) {
@@ -68,10 +78,8 @@ function createWindow(windowType, goUrl) {
 ipcMain.on('window-control', (event, action) => {
   const win = BrowserWindow.getFocusedWindow()
   if (!win) {
-    console.log('No focused window for action:', action)
     return
   }
-  console.log('Handling window control:', action)
 
   switch (action) {
     case 'minimize':
@@ -139,10 +147,33 @@ ipcMain.handle('read-file', (event, { path }) => {
   }
 })
 
+ipcMain.handle('read-file-buffer', (event, { path }) => {
+  try {
+    return fs.readFileSync(path)
+  } catch (error) {
+    throw new Error(`文件读取失败: ${error.message}`)
+  }
+})
+
 ipcMain.handle('write-file', (event, { path, data }) => {
   fs.writeFile(path, data, (err) => {
     if (err) throw err
   })
 })
+
+// 读取文件并返回文件内容，检查文件编码
+ipcMain.handle('read-doc', (event, { filePath }) => {
+  try {
+    const buffer  = fs.readFileSync(filePath);
+    const bianma = chardet.detect(buffer);
+    if (bianma === null) {
+      return { success: false, error: '无法检测文件编码' };
+    }
+    const content = iconv.decode(buffer, bianma);
+    return { success: true, content, bianma };
+  } catch (error) {
+    return { success: false, error: error };
+  }
+});
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
