@@ -1,6 +1,6 @@
 <script setup>
 // 移除未使用的ref导入
-import { ref } from 'vue'
+// import { ref } from 'vue'
 
 defineProps({
   msg: String

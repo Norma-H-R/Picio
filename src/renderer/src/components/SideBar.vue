@@ -2,8 +2,6 @@
 import { ref, onMounted, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import menuItems from '../assets/menuItems.json'
-import docsItems from '../assets/docs.json'
-import { useEventBus } from '@vueuse/core'
 
 defineProps({
   isVisible: Boolean
@@ -11,15 +9,8 @@ defineProps({
 
 const menuData = ref([])
 const router = useRouter()
-const eventBus = useEventBus('load-docs')
 
-onMounted(() => {
-  // console.log(ref.value)
-  // menuData.value = menuItems
-  // eventBus.on(() => {
-  //   menuData.value = menuItems[0].children
-  // })
-})
+onMounted(() => {})
 const handleMenuItemClick = (item) => {
   if (item.type === 'link') {
     if (item.route) {
@@ -35,14 +26,10 @@ const route = useRoute()
 
 watchEffect(() => {
   if (route.path.startsWith('/doc')) {
-    const docMenu = menuItems.find(item => item.name === 'doc')
+    const docMenu = menuItems.find((item) => item.name === 'doc')
     menuData.value = docMenu?.children || []
-  } else {
-    menuData.value = menuItems
-  }
-
-  if (route.path.startsWith('/redadoc')) {
-    const docMenu = menuItems.find(item => item.name === 'redadoc')
+  } else if (route.path.startsWith('/docs')) {
+    const docMenu = menuItems.find((item) => item.name === 'redadoc')
     menuData.value = docMenu?.children || []
   } else {
     menuData.value = menuItems

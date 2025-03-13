@@ -1,11 +1,11 @@
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 
 // 添加文件打开处理程序
 ipcMain.handle('open-file', async (event, { path }) => {
-  const { shell } = require('electron');
-  await shell.openPath(path);
-});
+  const { shell } = require('electron')
+  await shell.openPath(path)
+})
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/picio.png?asset'
@@ -165,16 +165,16 @@ ipcMain.handle('write-file', (event, { path, data }) => {
 // 读取文件并返回文件内容，检查文件编码
 ipcMain.handle('read-doc', (event, { filePath }) => {
   try {
-    const buffer  = fs.readFileSync(filePath);
-    const bianma = chardet.detect(buffer);
+    const buffer = fs.readFileSync(filePath)
+    const bianma = chardet.detect(buffer)
     if (bianma === null) {
-      return { success: false, error: '无法检测文件编码' };
+      return { success: false, error: '无法检测文件编码' }
     }
-    const content = iconv.decode(buffer, bianma);
-    return { success: true, content, bianma };
+    const content = iconv.decode(buffer, bianma)
+    return { success: true, content, bianma }
   } catch (error) {
-    return { success: false, error: error };
+    return { success: false, error: error }
   }
-});
+})
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

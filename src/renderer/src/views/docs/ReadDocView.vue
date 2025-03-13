@@ -19,15 +19,21 @@
           <h2>{{ currentDoc.name }}</h2>
         </div>
       </div>
-      <h2 :class="isReadingMode ? 'doc-read-head-h2' : 'doc-read-head-h2-none'">{{ currentDoc.name }}</h2>
-      <div :class="isReadingMode ? 'doc-read-head-read-cos' : 'doc-read-head-read-cos-none'">阅读进度</div>
-      <div :class="isReadingMode ? 'doc-read-head-read-time' : 'doc-read-head-read-time-none'">上次阅读时间</div>
+      <h2 :class="isReadingMode ? 'doc-read-head-h2' : 'doc-read-head-h2-none'">
+        {{ currentDoc.name }}
+      </h2>
+      <div :class="isReadingMode ? 'doc-read-head-read-cos' : 'doc-read-head-read-cos-none'">
+        阅读进度
+      </div>
+      <div :class="isReadingMode ? 'doc-read-head-read-time' : 'doc-read-head-read-time-none'">
+        上次阅读时间
+      </div>
     </div>
     <div :class="isReadingMode ? 'doc-read-head-back' : 'doc-read-head-back-none'"></div>
-    <div class="readview"  :class="isReadingMode ? 'readview-show' : 'readview-none'">
+    <div class="readview" :class="isReadingMode ? 'readview-show' : 'readview-none'">
       <div class="readcontent">
-      {{ errorMessage || content }}
-    </div>
+        {{ errorMessage || content }}
+      </div>
     </div>
   </div>
 </template>
@@ -35,59 +41,50 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useEventBus } from '@vueuse/core'
+// 移除electron notification的直接引用
+// import { notification } from 'electron';
 
 const content = ref('')
 const route = useRoute()
-const eventBus = useEventBus('load-docs')
 const currentDoc = ref(null)
 const isLoading = ref(true)
 const errorMessage = ref('')
-const isReadingMode = ref(false);
+const isReadingMode = ref(false)
 
 const openDocument = () => {
-  isReadingMode.value = !isReadingMode.value;
-
+  isReadingMode.value = !isReadingMode.value
 }
-const docListPath = './src/renderer/public/doclist.json';
+const docListPath = './src/renderer/public/doclist.json'
 
 onMounted(async () => {
   try {
-    const id = Number(route.query.id);
-   //获取文件路径 
-    const docListData = await window.electronAPI.invoke('read-file', { path: docListPath });
-    const docs = JSON.parse(docListData || '[]');
-    
-    currentDoc.value = docs.find(doc => doc.id === id);
-    const filePath = currentDoc.value.path;
-
-
-    const result = await window.electronAPI.invoke('read-doc', { filePath: filePath });
+    const id = Number(route.query.id)
+    const docListData = await window.electronAPI.invoke('read-file', { path: docListPath })
+    const docs = JSON.parse(docListData || '[]')
+    currentDoc.value = docs.find((doc) => doc.id === id)
+    const filePath = currentDoc.value.path
+    const result = await window.electronAPI.invoke('read-doc', { filePath: filePath })
     content.value = result.content
 
     if (!currentDoc.value) {
-      throw new Error('未找到该文档');
+      throw new Error('未找到该文档')
     }
     if (result.success) {
       content.value = result.content
     } else {
       errorMessage.value = '文件读取失败：' + result.error
     }
-
-
-
   } catch (error) {
-    errorMessage.value = error.message;
-    notification.value.addNotification({
-      title: '加载失败',
-      message: error.message,
-      type: 'error'
-    });
+    errorMessage.value = error.message
+    // 使用electron IPC通信
+    window.electronAPI.send('show-notification', {
+      title: '错误通知',
+      body: error.message
+    })
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-});
-  eventBus.emit()
+})
 </script>
 
 <style scoped>
@@ -107,15 +104,14 @@ h2 {
   form {
     opacity: 0;
     left: -100%;
-  }to{
+  }
+  to {
     opacity: 1;
     left: 120px;
   }
 }
 .doc-read-head-h2-none {
   display: none;
-}
-.doc-info {
 }
 .doc-info-h2 {
   position: absolute;
@@ -130,7 +126,8 @@ h2 {
     opacity: 0;
     transform: translateX(50px);
     display: none;
-  }to{
+  }
+  to {
     opacity: 1;
     transform: translateX(0px);
   }
@@ -142,7 +139,8 @@ h2 {
   from {
     opacity: 1;
     transform: translateX(0px);
-  }to{
+  }
+  to {
     opacity: 0;
     transform: translateX(50px);
     display: none;
@@ -170,7 +168,8 @@ h2 {
   form {
     opacity: 0;
     left: -100%;
-  }to{
+  }
+  to {
     opacity: 1;
     left: 150px;
   }
@@ -179,9 +178,10 @@ h2 {
   from {
     opacity: 0;
     left: -100%;
-  }to{
+  }
+  to {
     opacity: 1;
-    left: 150px
+    left: 150px;
   }
 }
 .doc-read-head-read-cos-none {
@@ -204,7 +204,8 @@ h2 {
 @keyframes doc-read-head-back {
   from {
     width: 0%;
-  }to{
+  }
+  to {
     width: 100%;
   }
 }
@@ -212,7 +213,7 @@ h2 {
   padding: 0px;
   width: 100%;
   height: 100%;
-} 
+}
 .doc-read-head {
   width: 100%;
   height: 70px;
@@ -244,7 +245,6 @@ h2 {
 }
 .doc-content .cover-image {
   width: 200px;
-  /* position: absolute; */
   top: 30%;
   left: 20%;
 }
@@ -257,7 +257,6 @@ h2 {
   color: #ff4d4f;
   padding: 20px;
 }
-
 .document-content {
   white-space: pre-wrap;
   line-height: 1.6;
@@ -284,7 +283,8 @@ h2 {
   from {
     opacity: 0;
     top: 300px;
-  }to{
+  }
+  to {
     opacity: 1;
     top: 110px;
   }
@@ -293,7 +293,8 @@ h2 {
   from {
     opacity: 1;
     top: 110px;
-  }to{
+  }
+  to {
     display: none;
     opacity: 0;
     top: 300px;

@@ -1,6 +1,5 @@
 <template>
   <div class="doc-list-container">
-    <!-- 文档列表内容 -->
     <div v-for="doc in docs" :key="doc.id" class="doc-item">
       {{ doc.title }}
     </div>
