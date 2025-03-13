@@ -1,12 +1,51 @@
 [
   {
+    "name": "home",
+    "text": "首页",
+    "icon": "img/user.svg",
+    "type": "link",
+    "route": "/",
+    "preload": "",
+    "haschildren": false
+  },
+  {
+    "name": "doc",
     "text": "阅读",
     "icon": "img/user.svg",
     "type": "link",
-    "route": "docs",
-    "preload": "docs.js"
+    "route": "/doc",
+    "haschildren": true,
+    "children": [
+      {
+        "text": "首页",
+        "icon": "img/user.svg",
+        "type": "link",
+        "route": "/"
+      },
+      {
+        "text": "文档列表",
+        "icon": "img/user.svg",
+        "type": "link",
+        "route": "/doclist",
+        "ischildren": true
+      },
+      {
+        "text": "知识点",
+        "icon": "img/settings.svg",
+        "type": "link",
+        "route": "/docdot",
+        "ischildren": true
+      },
+      {
+        "text": "知识地图",
+        "icon": "img/favorite.svg",
+        "type": "link",
+        "route": "/docmap",
+        "ischildren": true
+      }]
   },
   {
+    "name": "settings",
     "text": "设置",
     "icon": "img/settings.svg",
     "type": "link",
@@ -14,6 +53,7 @@
     "preload": ""
   },
   {
+    "name": "favorites",
     "text": "收藏",
     "icon": "img/favorite.svg",
     "type": "link",

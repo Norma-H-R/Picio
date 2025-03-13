@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, watchEffect } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import menuItems from '../assets/menuItems.json'
 import docsItems from '../assets/docs.json'
 import { useEventBus } from '@vueuse/core'
@@ -14,10 +14,11 @@ const router = useRouter()
 const eventBus = useEventBus('load-docs')
 
 onMounted(() => {
-  menuData.value = menuItems
-  eventBus.on(() => {
-    menuData.value = docsItems
-  })
+  // console.log(ref.value)
+  // menuData.value = menuItems
+  // eventBus.on(() => {
+  //   menuData.value = menuItems[0].children
+  // })
 })
 const handleMenuItemClick = (item) => {
   if (item.type === 'link') {
@@ -30,6 +31,25 @@ const handleMenuItemClick = (item) => {
     router.push(item.route)
   }
 }
+const route = useRoute()
+
+watchEffect(() => {
+  if (route.path.startsWith('/doc')) {
+    const docMenu = menuItems.find(item => item.name === 'doc')
+    menuData.value = docMenu?.children || []
+  } else {
+    menuData.value = menuItems
+  }
+
+  if (route.path.startsWith('/redadoc')) {
+    const docMenu = menuItems.find(item => item.name === 'redadoc')
+    menuData.value = docMenu?.children || []
+  } else {
+    menuData.value = menuItems
+  }
+})
+
+// 移除原有的事件总线监听
 </script>
 
 <template>

@@ -6,6 +6,7 @@
       :style="{ left: x + 'px', top: y + 'px' }"
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
+      @click="go_read(id)"
     >
       <div class="doc-info">
         <div class="doc-title">{{ name }}</div>
@@ -43,14 +44,23 @@ defineExpose({
     visible.value = true
     x.value = adjustedX
     y.value = adjustedY
+    id.value = pos.id
     name.value = pos.name
     cover.value = pos.cover
   },
   hide: () => (visible.value = false)
 })
-
+const id = ref('')
 const name = ref('')
 const cover = ref('')
+
+const go_read = (item) => {
+  // console.log(item)
+  window.electronAPI.send('create-child-window', {
+    windowType: 'secondary',
+    goUrl: 'readdoc?id=' + item
+  })
+}
 </script>
 
 <style scoped>

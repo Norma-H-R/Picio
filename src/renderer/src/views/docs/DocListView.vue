@@ -1,5 +1,4 @@
 <template>
-  <!-- todo:还是要精细化动画流程 -->
   <div class="container">
     <div class="header">
       <div class="doc-find" :class="{ 'doc-find-input': isInputActive }">
@@ -54,11 +53,8 @@
 <script setup>
 import { onMounted, ref, inject, nextTick } from 'vue'
 import PopDoc from '@/components/PopDoc.vue'
-import { useEventBus } from '@vueuse/core'
 
 const docListPath = './src/renderer/public/doclist.json'
-
-const eventBus = useEventBus('load-docs')
 const docList = ref([])
 const notification = inject('notification')
 const popdocRef = ref(null)
@@ -80,6 +76,7 @@ const handleHover = (event, index) => {
   popdocRef.value?.show({
     x: rect.left + rect.width / 2,
     y: rect.top + rect.height / 2,
+    id: file.id,
     name: file.name,
     cover: file?.cover === 'dd' ? '/img/pbook.jpg' : file?.cover
   })
@@ -137,7 +134,6 @@ onMounted(async () => {
   try {
     const storedData = await window.electronAPI.invoke('read-file', { path: docListPath })
     docList.value = storedData ? JSON.parse(storedData) : []
-    eventBus.emit()
   } catch (error) {
     notification.value.addNotification({
       title: '加载失败',
@@ -159,11 +155,10 @@ const go_read = (item) => {
 <style scoped>
 .container {
   padding: 0px 0px 0px;
-}
-.container {
   padding: 0px;
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .header {

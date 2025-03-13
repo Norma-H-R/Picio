@@ -1,5 +1,11 @@
 [
   {
+    "text": "首页",
+    "icon": "img/user.svg",
+    "type": "link",
+    "route": "/"
+  },
+  {
     "text": "文档列表",
     "icon": "img/user.svg",
     "type": "link",

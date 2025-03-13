@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>Welcome to Picio</h1>
+    <h1>欢迎来到Picio</h1>
     <div class="button-group">
       <button
         class="notify-btn"

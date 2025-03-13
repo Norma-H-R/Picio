@@ -22,18 +22,28 @@ const routes = [
     component: () => import('@/views/FavoritesView.vue')
   },
   {
-    path: '/docs',
-    name: 'docs',
+    path: '/doc',
+    name: 'Doc',
     component: () => import('@/views/DocPageView.vue')
   },
   {
-    path: '/docslsit',
-    name: 'docslsit',
+    path: '/doclist',
+    name: 'Doclsist',
     component: () => import('@/views/docs/DocListView.vue')
   },
   {
+    path: '/docdot',
+    name: 'Docdot',
+    component: () => import('@/views/docs/DocDotView.vue')
+  },
+  {
+    path: '/docmap',
+    name: 'Docmap',
+    component: () => import('@/views/docs/DocMapView.vue')
+  },
+  {
     path: '/readdoc',
-    name: 'readdoc',
+    name: 'Readdoc',
     component: () => import('@/views/docs/ReadDocView.vue')
   }
 ]

@@ -32,7 +32,8 @@ function createWindow(windowType, goUrl) {
       contextIsolation: true,
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
-      webSecurity: true
+      webSecurity: true,
+      devTools: true
     },
     icon: join(__dirname, '../../resources/picio.png'),
     ...(windowType === 'secondary' && {
@@ -51,7 +52,7 @@ function createWindow(windowType, goUrl) {
   } else {
     if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
       mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-      mainWindow.webContents.openDevTools()
+      // mainWindow.webContents.openDevTools()
     } else {
       mainWindow.loadURL('http://localhost:5173/' + goUrl)
     }
@@ -65,7 +66,7 @@ function createWindow(windowType, goUrl) {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   // if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
